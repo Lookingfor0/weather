@@ -8,15 +8,21 @@ Page({
    */
   data: {
     weekWeather: [],
+    city: '北京市',
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad() {
+  onLoad(options) {
+    // console.log('onLoad');
+    let city = options.city;
+    this.setData({
+      city: city
+    })
     this.getWeekWeather();
   },
-
+  
   onPullDownRefresh() {
     this.getWeekWeather(() => {
       wx.stopPullDownRefresh();
@@ -28,7 +34,7 @@ Page({
       url: 'https://test-miniprogram.com/api/weather/future',
       data: {
         time: new Date().getTime(),
-        city: "武汉市"
+        city: this.data.city
       },
       success: res => {
         let result = res.data.result;
@@ -39,7 +45,6 @@ Page({
   },
 
   setWeekWeather(result) {
-    console.log(result.weather)
     let weekWeather = [];
     for(let i = 0; i < 7; i++) {
       let date = new Date()
